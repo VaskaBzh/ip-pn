@@ -1,0 +1,1 @@
+export { InputPropsInterface } from "./InputPropsInterface";

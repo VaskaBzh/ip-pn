@@ -1,0 +1,1 @@
+export { IpModel } from "./IpModel";
