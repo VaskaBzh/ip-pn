@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { RequestContract } from "../request/RequestContract";
-import { ResponseType } from "@/Types/ResponseType";
+import { ResponseType } from "@/types/ResponseType";
 
 
 export abstract class BaseClient {

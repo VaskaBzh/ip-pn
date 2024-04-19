@@ -1,17 +1,19 @@
-import { IpService, IpServiceContract } from "@/services";
-import { IpControllerContract } from "./contracts";
+import { IpService } from "@/services";
+import { IpControllerContract } from "./contracts/IpControllerContract";
+import { IpServiceContract } from "@/services/contracts/IpServiceContract"
 
 export class IpController implements IpControllerContract {
   service: IpServiceContract;
 
   constructor(ipService: typeof IpService = IpService) {
-    this.service = new ipService();
+    this.service = ipService.initService();
   }
 
   public async create(ipAddress: string): Promise<void> {
     await this.service
       .createIpRecord(ipAddress)
-      .saveIpList();
+
+    this.service.saveIpList();
   }
 
   public read(): void {

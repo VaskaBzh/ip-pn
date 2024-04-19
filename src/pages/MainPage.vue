@@ -45,6 +45,10 @@ const ipAddress: Ref<string> = ref("")
 
 <style scoped lang="scss">
 .main {
+  &_link {
+    display: inline-flex;
+    width: fit-content;
+  }
   &__container {
     display: flex;
     flex-direction: column;

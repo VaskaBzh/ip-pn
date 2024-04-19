@@ -1,1 +1,1 @@
-export * as enums from "./enums";
+export { LayoutsEnum } from "./enums/LayoutsEnum";

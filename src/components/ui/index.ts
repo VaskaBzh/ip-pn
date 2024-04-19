@@ -6,12 +6,10 @@ import MainButton from "./MainButton.vue";
 import MainLink from "./MainLink.vue";
 
 export default {
-  components: {
-    MainSearch,
-    MainIcon,
-    MainButton,
-    MainTextarea,
-    MainForm,
-    MainLink,
-  }
+  MainSearch,
+  MainIcon,
+  MainButton,
+  MainTextarea,
+  MainForm,
+  MainLink
 }

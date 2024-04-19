@@ -1,6 +1,5 @@
 <template>
   <el-button
-    :type="type"
     class="button"
     :disabled="disabled"
     :size="size"
@@ -11,11 +10,12 @@
 </template>
 
 <script setup lang="ts">
+import { EpPropMergeType } from "element-plus/es/utils";
+
 interface ButtonPropsInterface {
-  type?: string,
   disabled?: boolean,
-  size?: string,
   loading?: boolean,
+  size?: EpPropMergeType<StringConstructor, "" | "default" | "small" | "large", never> | undefined
 }
 
 withDefaults(

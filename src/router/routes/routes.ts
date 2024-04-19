@@ -41,9 +41,9 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/catalog",
     name: "catalog",
-    query: {
-      search: "",
-    },
+    // query: {
+    //   search: "",
+    // },
     component: async (): Promise<Component> => await import("../../pages/CatalogPage.vue"),
     meta: {
       middlewares: ["LoadLayoutMiddleware"],

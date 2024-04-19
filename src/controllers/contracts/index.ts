@@ -1,1 +1,0 @@
-export { IpControllerContract } from "./IpControllerContract";

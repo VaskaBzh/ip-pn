@@ -1,4 +1,4 @@
-import { IpModel, IpModelDeclare } from "@/models";
+import { IpModel } from "@/models";
 import { IpClient } from "@/api";
 import { SecureResponseType } from "@/types/ResponseType";
 import { IpClientContract } from "@/api/clients/contracts/IpClientContract";
@@ -6,6 +6,7 @@ import { IpData } from "@/DTO";
 import { ResponseTrait } from "@/traits/ResponseTrait";
 import { IpType } from "@/types/IpType";
 import { IpServiceContract } from "@/services/contracts/IpServiceContract";
+import { IpModelDeclare } from "@/models/declare/IpModelDeclare";
 
 export class IpService implements IpServiceContract {
   client: IpClientContract;
@@ -23,10 +24,12 @@ export class IpService implements IpServiceContract {
     return this.ipModel.ipList;
   }
 
-  public async createIpRecord(ipAddress: string): this {
+  public async createIpRecord(ipAddress: string): Promise<this> {
     const response: SecureResponseType = await this.client.checkIp(ipAddress);
 
-    this.ipModel.ipList.push(new IpData(ResponseTrait.getResponseData(response)));
+    if (response) {
+      this.ipModel.ipList.push(new IpData(ResponseTrait.getResponseData(response)));
+    }
 
     return this;
   }
@@ -37,7 +40,7 @@ export class IpService implements IpServiceContract {
   }
 
   private getSavedIpList(): IpType[] {
-    return JSON.parse(localStorage.getItem("ipList")) ?? [];
+    return JSON.parse(localStorage.getItem("ipList") ?? "[]");
   }
 
   public setIpList(): void {
@@ -67,15 +70,15 @@ export class IpService implements IpServiceContract {
 
         return filteredIpList ? ipRecord : null;
       })
-      .filter((bool: IpType | null) => bool)
+      .filter((bool: IpType | null) => bool) as IpType[]
 
     return this;
   }
 
   public static initService(
-    client: typeof ipClient = ipClient,
+    client: typeof IpClient = IpClient,
     ipModel: typeof IpModel = IpModel
-  ) {
+  ): IpService {
     return new IpService(client, ipModel);
   }
 }

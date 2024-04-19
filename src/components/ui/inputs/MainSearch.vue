@@ -3,7 +3,6 @@
       class="input input-search"
       :placeholder="placeholder"
       :label="label"
-      :model-value="modelValue"
       :type="type"
       v-model="modelValue"
   >
@@ -33,11 +32,13 @@ const emit = defineEmits<{
   changeInputValue: [modelValue: string]
 }>()
 
-const modelValue: Ref<string> = ref(props.value);
+const modelValue: Ref<string | undefined> = ref(props.value);
 
-watch(() => modelValue.value, (newInputValue: string) => {
-  emit('changeInputValue', newInputValue)
-})
+watch(modelValue, (newInputValue: string | undefined) => {
+  if (newInputValue !== undefined) {
+    emit('changeInputValue', newInputValue);
+  }
+});
 </script>
 
 <style scoped lang="scss">

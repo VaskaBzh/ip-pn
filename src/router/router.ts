@@ -3,29 +3,29 @@ import {
   createRouter,
   createWebHistory,
   NavigationGuardNext,
+  RouteLocationNormalized,
   Router,
-  RouteRecordNormalized
 } from "vue-router";
-import * as middlewares from "./middlewares";
+import middlewares from "./middlewares";
 
 const router: Router = createRouter({
   history: createWebHistory(),
   routes
 })
 
-router.beforeEach(async (to: RouteRecordNormalized, from: RouteRecordNormalized, next: NavigationGuardNext) => {
-  const routeMiddleware: string[] = to.meta.middlewares
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): Promise<void> => {
+  const routeMiddleware: string[] = to.meta.middlewares as string[]
 
   if (!routeMiddleware) {
-    return next();
+    next();
   }
 
   const middlewareFunctions: Array<(...args: unknown[]) => unknown> = routeMiddleware.map(
-    (name: string) => middlewares.default[name]
+    (name: string) => middlewares[name]
   );
 
   for (let i: number = 0; i < middlewareFunctions.length; i++) {
-    await middlewareFunctions[i](to, router);
+    await middlewareFunctions[i](to, router, from);
   }
 
   next();

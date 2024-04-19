@@ -1,48 +1,43 @@
-import { defineStore } from 'pinia'
-import { IpType } from "@/types/IpType.ts";
+import { defineStore, StoreDefinition } from 'pinia'
+import { IpType } from "@/types/IpType";
 import { IpService } from "@/services";
+import { ref, Ref } from "vue"
 
-const ipService = new IpService();
+const ipService: IpService = IpService.initService();
 
-export const useIpStore = defineStore('ip', {
-  state: (): { ipList: IpType[] } => ({
-    ipList: [],
-  }),
-  getters: {
-    getIpList(state): IpType[] {
-      return state.ipList
-    },
-  },
-  actions: {
-    setIpList(): void {
-      this.ipList = ipService.ipList;
-    },
-    async create(ipAddress: string): Promise<void> {
-      await ipService
+export const useIpStore: StoreDefinition = defineStore('ip', () => {
+  const ipList: Ref<IpType[]> = ref([]);
+
+  function setIpList(): void {
+    ipList.value = ipService.ipList;
+  }
+
+  async function create(ipAddress: string): Promise<void> {
+    await ipService
         .createIpRecord(ipAddress);
-      ipService.saveIpList();
+    ipService.saveIpList();
 
-      this.setIpList();
-    },
-    read(): void {
-      ipService.setIpList();
+    setIpList();
+  }
+  function read(): void {
+    ipService.setIpList();
 
-      this.setIpList();
-    },
-    remove(ipRecordsIndexes: number[]): void {
-      console.log(ipRecordsIndexes)
-      ipService
+    setIpList();
+  }
+  function remove(ipRecordsIndexes: number[]): void {
+    ipService
         .removeIpRecordsByIndexes(ipRecordsIndexes);
 
-      ipService.saveIpList();
+    ipService.saveIpList();
 
-      this.setIpList();
-    },
-    search(searchQuery: string): void {
-      ipService
+    setIpList();
+  }
+  function search(searchQuery: string): void {
+    ipService
         .searchIpRecords(searchQuery)
 
-      this.setIpList();
-    }
-  },
+    setIpList();
+  }
+
+  return { ipList, create, read, remove, search }
 })

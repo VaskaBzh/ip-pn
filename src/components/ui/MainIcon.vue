@@ -6,22 +6,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef } from "vue";
-
 interface IProps {
   size?: string,
   color?: string,
 }
 
-const props: IProps = withDefaults(
+withDefaults(
     defineProps<IProps>(),
     {
       size: "20",
       color: "black",
     }
 )
-
-const symbolId: ComputedRef<string> = computed(() => `#${props.prefix}-${props.name}`)
 </script>
 
 <style scoped lang="scss">

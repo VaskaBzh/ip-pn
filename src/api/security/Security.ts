@@ -22,6 +22,8 @@ export async function securitySend(request: () => Promise<ResponseType>): Promis
       return response;
     }
 
+    alert('Все окей!');
+
     return response;
   } catch (error) {
     throw new Error(`Error with: ${error}`)

@@ -3,7 +3,7 @@ import { ResponseType } from "@/types/ResponseType";
 export class ResponseTrait {
   static getResponseData(response: ResponseType): ResponseType {
     if (!response?.data) {
-      return response as ResponseType;
+      return response;
     }
 
     if (response?.data) {

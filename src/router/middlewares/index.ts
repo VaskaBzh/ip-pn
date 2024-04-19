@@ -1,3 +1,11 @@
 import { LoadLayoutMiddleware } from "./LoadLayoutMiddleware"
 
-export default { LoadLayoutMiddleware };
+interface MiddlewareMap {
+    [key: string]: (...args: any[]) => Promise<unknown>
+}
+
+const middlewares: MiddlewareMap = {
+    LoadLayoutMiddleware: LoadLayoutMiddleware,
+};
+
+export default middlewares;

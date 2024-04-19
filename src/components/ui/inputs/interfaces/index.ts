@@ -1,1 +1,3 @@
-export { InputPropsInterface } from "./InputPropsInterface";
+import { InputPropsInterface } from "./InputPropsInterface";
+
+export type { InputPropsInterface };

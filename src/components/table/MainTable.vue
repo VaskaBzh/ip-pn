@@ -6,19 +6,19 @@
     stripe
     :max-height="40 * 6"
     class="table"
-    :default-sort="{ order: 'ascending' }"
     row-class-name="table_row"
+    ref="table"
   >
     <el-table-column type="selection" />
     <el-table-column class="no-border" prop="ip" label="Ip" width="120" />
     <el-table-column align="center" width="230" >
-      <template #header="scope">
+      <template #header>
         <div class="table_row__block">
           <main-button
             size="small"
             class="table_button table_button-remove"
             v-show="savedSelectedArray.length > 0"
-            @click="$emit('remove-items', savedSelectedArray)"
+            @click="table?.clearSelection(); $emit('remove-items', savedSelectedArray)"
           >
             Удалить выбранные
           </main-button>
@@ -29,9 +29,9 @@
     <el-table-column prop="country" label="City/Town" />
     <el-table-column align="right" width="48" >
       <template #default="scope">
-        <div class="table_row__block" :class="[`table_row__block-${scope.row.status}`]">
-          <main-icon class="table_icon" :color="StatusColors[scope.row.status]" size="16">
-            <component :is="StatusIconsEnum[scope.row.status]" />
+        <div v-show="scope.row.status" class="table_row__block" :class="[`table_row__block-${scope.row.status}`]">
+          <main-icon class="table_icon" :color="StatusColorsEnum[scope.row.status as keyof typeof StatusColorsEnum]" size="16">
+            <component :is="StatusIconsEnum[scope.row.status as keyof typeof StatusIconsEnum]" />
           </main-icon>
         </div>
       </template>
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { useIpStore } from "@/store/IpStore";
 import { IpType } from "@/types/IpType";
-import { Ref, ref, watch } from "vue";
+import { Ref, ref } from "vue";
 import MainIcon from "@/components/ui/MainIcon.vue";
 import { StatusIconsEnum } from "@/enums/StatusIconsEnum";
 
@@ -50,19 +50,17 @@ defineEmits<{
   'remove-items': [savedSelectedArray: IpType[]]
 }>()
 
-// Такое совсем непрактично, но я тут итак что-то разошелся)
+const table: Ref<any | null> = ref(null);
+
+// Такое не очень практично, но в условиях тестового пойдет)
 const store = useIpStore();
 
-const savedSelectedArray: Ref<number[]> = ref([])
-function saveSelectedArray(element: IpType | IpType[]) {
-  savedSelectedArray.value = [...element.map(el => el.index)]
+const savedSelectedArray: Ref<IpType[]> = ref([])
+function saveSelectedArray(element: IpType[]) {
+  savedSelectedArray.value = [...element]
 }
 
-watch(() => store.getIpList, () => {
-  console.log(store.ipList)
-})
-
-enum StatusColors {
+enum StatusColorsEnum {
   success = "#3E7919",
   fail = "#791919",
 }
@@ -120,7 +118,4 @@ enum StatusColors {
     }
   }
 }
-//:global(.table_row) {
-//  background-color: red;
-//}
 </style>
