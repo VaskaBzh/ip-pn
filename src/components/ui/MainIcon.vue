@@ -1,4 +1,3 @@
-
 <template>
   <el-icon :size="size" :color="color">
     <slot />

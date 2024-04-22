@@ -7,11 +7,13 @@ import "./styles/app.scss"
 import ui from "./components/ui";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { createPinia } from "pinia";
+// import vFlagIcons from "v-flag-icons";
 
 const app = createApp(App)
 const pinia = createPinia()
 
 app.use(ElementPlus)
+    // .use(vFlagIcons)
     .use(pinia)
     .use(router)
     .mount('#app')

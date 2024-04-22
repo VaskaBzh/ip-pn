@@ -1,11 +1,12 @@
 import { IpType } from "@/types/IpType";
-import { StatusEnum } from "@/enums/StatusEnum";
+import { StatusEnum } from "@/enums";
+import { getEnumValue } from "@/utils";
 
 export class IpData implements IpType {
   ip: string;
   city: string;
   country: string;
-  countryIcon: URL;
+  countryIcon: string;
   status: StatusEnum;
 
   constructor(
@@ -13,8 +14,8 @@ export class IpData implements IpType {
   ) {
     this.city = ipRecord.city ?? "Unknown";
     this.country = ipRecord.country ?? "Unknown";
-    this.countryIcon = new URL(`@icon/flags/${ipRecord.countryCode}`, import.meta.url);
+    this.countryIcon = ipRecord.countryCode?.toLowerCase() ?? "";
     this.ip = ipRecord.query;
-    this.status = StatusEnum[ipRecord.countryCode as keyof typeof StatusEnum];
+    this.status = getEnumValue(StatusEnum, ipRecord.status, StatusEnum.pending);
   }
 }
